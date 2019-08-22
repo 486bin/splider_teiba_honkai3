@@ -4,6 +4,7 @@ import edu.xust.bigdata.domain.Post;
 import edu.xust.bigdata.parse.Parser;
 import edu.xust.bigdata.schedual.Schedual;
 import edu.xust.bigdata.schedual.impl.PostSchedualForQueue;
+import edu.xust.bigdata.schedual.impl.PostSchedualForRedis;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.htmlcleaner.XPatherException;
@@ -13,7 +14,7 @@ import org.htmlcleaner.XPatherException;
  */
 public class PostParser implements Parser {
     private HtmlCleaner htmlCleaner = new HtmlCleaner();
-    private Schedual schedual = PostSchedualForQueue.getPostSchedualForQueue();
+    private Schedual schedual = PostSchedualForRedis.getBdSchedual();
 
     /**
     * @Description:  解析贴吧主页面对应的全部帖子的url地址，将其存放在调度器的url队列中
@@ -25,6 +26,7 @@ public class PostParser implements Parser {
         TagNode tagNode = htmlCleaner.clean(html);
         try {
             Object[] hrefs = tagNode.evaluateXPath("//a[@class='j_th_tit ']/@href");
+            System.out.println(hrefs.length);
             for (Object href : hrefs) {
                 schedual.push(href.toString());
             }

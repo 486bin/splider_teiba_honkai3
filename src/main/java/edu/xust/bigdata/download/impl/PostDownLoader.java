@@ -10,12 +10,12 @@ public class PostDownLoader implements DownLoader {
 
     public String downLoad(String url) {
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        //测试阶段，下载页面休眠一秒
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        //测试阶段，下载页面休眠一秒
         String html = HttpUtil.htmlDownload(url);
         if (html != null)
             return html;
