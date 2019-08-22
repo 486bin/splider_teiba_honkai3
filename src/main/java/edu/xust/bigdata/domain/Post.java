@@ -15,6 +15,8 @@ public class Post {
     List<String> images = new ArrayList<String>();
 
     public Post() {
+        title = "无主题";
+        author = "NULL";
     }
 
     public Post(String title, String author, List images) {
@@ -37,7 +39,8 @@ public class Post {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if(title!=null)
+            this.title = title;
     }
 
     public String getAuthor() {
@@ -45,7 +48,8 @@ public class Post {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        if(author != null)
+            this.author = author;
     }
 
     public List getImages() {

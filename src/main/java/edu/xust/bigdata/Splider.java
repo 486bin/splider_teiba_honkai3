@@ -1,11 +1,13 @@
 package edu.xust.bigdata;
 
+import edu.xust.bigdata.dao.PostDao;
 import edu.xust.bigdata.domain.Post;
 import edu.xust.bigdata.download.impl.PostDownLoader;
 import edu.xust.bigdata.parse.impl.PostParser;
 import edu.xust.bigdata.schedual.impl.PostSchedualForQueue;
 import edu.xust.bigdata.schedual.impl.PostSchedualForRedis;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,6 +20,7 @@ public class Splider {
         final PostDownLoader postDownLoader = new PostDownLoader();
         final PostParser postParser = new PostParser();
         final PostSchedualForRedis postSchedual = PostSchedualForRedis.getBdSchedual();
+        final PostDao pd = new PostDao();
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
 
@@ -43,6 +46,12 @@ public class Splider {
                         String pageHtml = postDownLoader.downLoad("https://tieba.baidu.com" + pageUrl);
                         //解析具体的页面的标题和图片
                         Post post = postParser.parseCurrentToPost(pageHtml);
+                        try {
+                            if(post != null)
+                                pd.add(post);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         System.out.println(post);
                     } else {
 
